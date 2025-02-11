@@ -24,18 +24,18 @@ public class SimCardActivateReq {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SimCardActivateReq that = (SimCardActivateReq) o;
-        return Objects.equals(iccid, that.iccid) && Objects.equals(customerEmail, that.customerEmail);
+        return Objects.equals(this.iccid, that.iccid) && Objects.equals(customerEmail, that.customerEmail);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hash(iccid, customerEmail);
+        return Objects.hash(this.iccid, customerEmail);
     }
 
     @Override
     public String toString() {
         return "SimCardActivateReq{" +
-                "iccid='" + iccid + '\'' +
+                "iccid='" + this.iccid + '\'' +
                 ", customerEmail='" + customerEmail + '\'' +
                 '}';
     }

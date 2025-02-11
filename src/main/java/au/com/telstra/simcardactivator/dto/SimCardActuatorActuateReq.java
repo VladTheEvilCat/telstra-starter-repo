@@ -10,7 +10,7 @@ public class SimCardActuatorActuateReq {
         this.iccid = iccid;
     }
 
-    public String getIccid() { return iccid; }
+    public String getIccid() { return this.iccid; }
     public void setIccid(String iccid) { this.iccid = iccid; }
 
     @Override
@@ -18,18 +18,18 @@ public class SimCardActuatorActuateReq {
         if (this == o) return true;
         if (o == null || getClass() != o.getClass()) return false;
         SimCardActuatorActuateReq that = (SimCardActuatorActuateReq) o;
-        return Objects.equals(iccid, that.iccid);
+        return Objects.equals(this.iccid, that.iccid);
     }
 
     @Override
     public int hashCode() {
-        return Objects.hashCode(iccid);
+        return Objects.hashCode(this.iccid);
     }
 
     @Override
     public String toString() {
         return "SimCardActuatorReq{" +
-                "iccid='" + iccid + '\'' +
+                "iccid='" + this.iccid + '\'' +
                 '}';
     }
 }
