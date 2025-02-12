@@ -3,6 +3,7 @@ package au.com.telstra.simcardactivator.service.impl;
 import au.com.telstra.simcardactivator.dto.SimCardActuatorActuateReq;
 import au.com.telstra.simcardactivator.dto.SimCardActuatorActuateResp;
 import au.com.telstra.simcardactivator.model.SimCard;
+import au.com.telstra.simcardactivator.record.SimCardRecord;
 import au.com.telstra.simcardactivator.repository.SimCardRepository;
 import au.com.telstra.simcardactivator.service.ISimCardService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,16 +27,20 @@ public class SimCardServiceImpl implements ISimCardService {
 
     @Override
     public SimCard getCard(Long cardId) {
-        Optional<SimCard> simCard = simCardRepository.findById(cardId);
-        return simCard.orElse(null);
+        Optional<SimCardRecord> simCard = this.simCardRepository.findById(cardId);
+        if (simCard.isEmpty()) {
+            return null;
+        }
+        SimCardRecord simCardRecord = simCard.get();
+        return new SimCard(simCardRecord.getIccid(), simCardRecord.getCustomerEmail(), simCardRecord.isActive());
     }
 
     @Override
     public SimCard activateCard(SimCard simCard) {
         SimCardActuatorActuateReq actuateReq = new SimCardActuatorActuateReq(simCard.getIccid());
-        String url = simCardActuatorServiceUrl + "/actuate";
+        String url = this.simCardActuatorServiceUrl + "/actuate";
         ResponseEntity<SimCardActuatorActuateResp> actuateResp =
-                restTemplate.postForEntity(url, actuateReq, SimCardActuatorActuateResp.class);
+                this.restTemplate.postForEntity(url, actuateReq, SimCardActuatorActuateResp.class);
         SimCardActuatorActuateResp actuateResult = actuateResp.getBody();
         if (actuateResult == null) {
             simCard.setActive(false);
@@ -43,7 +48,9 @@ public class SimCardServiceImpl implements ISimCardService {
             simCard.setActive(actuateResult.getSuccess());
         }
         // DONE: Save in database
-        simCard = simCardRepository.save(simCard);
+        //SimCardRecord simCardRecord = new SimCardRecord(simCard);
+        //simCardRecord = simCardRepository.save(simCardRecord);
+        simCard.setId(simCardRepository.save(new SimCardRecord(simCard)).getId());
         return simCard;
     }
 }

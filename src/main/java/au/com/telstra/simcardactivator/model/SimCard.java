@@ -2,14 +2,8 @@ package au.com.telstra.simcardactivator.model;
 
 import java.util.Objects;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.GeneratedValue;
-import javax.persistence.GenerationType;
-
-@Entity
 public class SimCard {
-    @Id@GeneratedValue(strategy = GenerationType.AUTO)
+
     Long id;
     String iccid;
     String customerEmail;
